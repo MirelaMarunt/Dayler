@@ -1,0 +1,14 @@
+class Juurnal {
+  final int ide;
+  final String titlu;
+  final String descriere;
+  Juurnal({this.ide, this.titlu, this.descriere});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'ide': ide,
+      'titlu': titlu,
+      'descriere': descriere,
+    };
+  }
+}

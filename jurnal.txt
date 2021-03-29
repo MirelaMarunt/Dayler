@@ -1,0 +1,155 @@
+import 'package:flutter/material.dart';
+import 'package:what_todo/database_helper.dart';
+import 'package:what_todo/models/journal.dart';
+
+class Jurnal extends StatefulWidget {
+  final Juurnal jurnal;
+
+  Jurnal({@required this.jurnal});
+
+  @override
+  _JurnalState createState() => _JurnalState();
+}
+
+class _JurnalState extends State<Jurnal> {
+  DatabaseHelper _dbHelper = DatabaseHelper();
+
+  int _jurnalIde = 0;
+  String _jurnalTitlu = "";
+  String _jurnalDescriere = "";
+
+  FocusNode _titluFocus;
+  FocusNode _descriereFocus;
+
+  bool _contentVisile = false;
+
+  @override
+  void initState() {
+    if (widget.jurnal != null) {
+      // Set visibility to true
+      _contentVisile = true;
+
+      _jurnalTitlu = widget.jurnal.titlu;
+      _jurnalDescriere = widget.jurnal.descriere;
+      _jurnalIde = widget.jurnal.ide;
+    }
+
+    _titluFocus = FocusNode();
+    _descriereFocus = FocusNode();
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _titluFocus.dispose();
+    _descriereFocus.dispose();
+
+    super.dispose();
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          color: Colors.lightBlue[50],
+          child: Stack(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                    top: 24.0,
+                    bottom: 6.0,
+                   ),
+                   child: Row(
+                     children: [
+                       InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(24.0),
+                            child: Image(
+                              image: AssetImage('assets/images/back_arrow_icon.png'),
+                            ),
+                          ),
+                       ),
+                       Expanded(
+                          child: TextField(
+                            focusNode: _titluFocus,
+                            onSubmitted: (value) async {
+                              // Check if the field is not empty
+                              if (value != "") {
+                              // Check if the task is null
+                                if (widget.jurnal == null) {
+                                  Juurnal _newJuurnal = Juurnal(titlu: value);
+                                  _jurnalIde = await _dbHelper.insertJuurnal(_newJuurnal);
+                                  setState(() {
+                                    _contentVisile = true;
+                                    _jurnalTitlu = value;
+                                  });
+                                } else {
+                                  await _dbHelper.updateJuurnalTitle(_jurnalIde, value);
+                                  print("Juurnal Updated");
+                                }
+                                _descriereFocus.requestFocus();
+                              }
+                            },
+                            controller: TextEditingController()
+                              ..text = _jurnalTitlu,
+                            decoration: InputDecoration(
+                              hintText: "Introduceti un titlu de notita",
+                              border: InputBorder.none,
+                            ),
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF211551),
+                            ),
+                          ),
+                      )
+                     ],
+                   ),
+                  ),
+                  Visibility(
+                    visible: _contentVisile,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        bottom: 12.0,
+                      ),
+                      child: TextField(
+                        focusNode: _descriereFocus,
+                        onSubmitted: (value) async {
+                          if(value != ""){
+                            if(_jurnalIde != 0){
+                              await _dbHelper.updateJuurnalDescription(_jurnalIde, value);
+                              _jurnalDescriere = value;
+                            }
+                          }},
+                        controller: TextEditingController()..text = _jurnalDescriere,
+                        decoration: InputDecoration(
+                          hintText: "Introduceti detalii pentru notita",
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 24.0,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+  }
+}

@@ -1,0 +1,147 @@
+import 'package:flutter/material.dart';
+import 'package:what_todo/screens/homepage.dart';
+import 'package:what_todo/screens/journalpage.dart';
+import 'package:what_todo/screens/quotepage.dart';
+
+class Menu extends StatefulWidget {
+  @override
+  _MenuState createState() => _MenuState();
+}
+
+class _MenuState extends State<Menu> {
+  @override
+  Widget build(BuildContext context) {
+      return Scaffold(
+          body: SafeArea(
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(horizontal: 30.0),
+              color: Colors.lightBlue[50],
+              child: Stack(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                          top: 50.0,
+                          bottom: 40.0,
+                          left: 70.0,
+                        ),
+                        child: Image(
+                          image: AssetImage('assets/images/logo_with_name.png'),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    bottom: 300.0,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Homepage()
+                          ),
+                        ).then((value) {
+                          setState(() {});
+                        });
+                      },
+                      child: Container(
+                          width: 350.0,
+                          height: 80.0,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: <Color>[
+                                Colors.deepPurple[600],
+                                Color(0xFF42A5F5),
+                                Colors.cyan[300],
+
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(100.0),
+                          ),
+                          padding: EdgeInsets.all(21.0),
+                          child: Text('Sectiune task-uri', style: TextStyle(fontSize: 32, color: Colors.white)),
+
+
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                      bottom: 200.0,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Journalpage()
+                            ),
+                          ).then((value) {
+                            setState(() {});
+                          });
+                        },
+                        child: Container(
+                            width: 350.0,
+                            height: 80.0,
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: <Color>[
+                                    Colors.deepPurple[600],
+                                    Color(0xFF42A5F5),
+                                    Colors.cyan[300],
+
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(100.0),
+                            ),
+                            padding: EdgeInsets.all(21.0),
+                            child: Text('Sectiune jurnal', style: TextStyle(fontSize: 32, color: Colors.white)),
+
+                            ),
+                      ),
+                  ),
+                  Positioned(
+                    bottom: 100.0,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Quotepage()
+                          ),
+                        ).then((value) {
+                          setState(() {});
+                        });
+                      },
+                      child: Container(
+                        width: 350.0,
+                        height: 80.0,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: <Color>[
+                              Colors.deepPurple[600],
+                              Color(0xFF42A5F5),
+                              Colors.cyan[300],
+
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(100.0),
+                        ),
+                        padding: EdgeInsets.all(21.0),
+                        child: Text('Citatul zilei', style: TextStyle(fontSize: 32, color: Colors.white)),
+
+                      ),
+                    ),
+                  )
+
+                      ],
+
+
+              ),
+
+            ),
+          ),
+      );
+  }
+}
